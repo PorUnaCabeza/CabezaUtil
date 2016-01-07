@@ -137,6 +137,7 @@ public class HtmlModelUtil {
         for(Element elmt:elmts){
             if(elmt.hasAttr("width")||elmt.hasAttr("height")){
                 sb.setLength(0);
+                sb.append(elmt.attr("style"));
                 if(elmt.hasAttr("width")) {
                     sb.append("width:" + elmt.attr("width") + ";");
                     elmt.removeAttr("width");
@@ -157,12 +158,12 @@ public class HtmlModelUtil {
      * @throws Exception
      */
     public void printHtml(String fileName) throws Exception{
-        FileOutputStream fos
-                = new FileOutputStream(fileName);
-        OutputStreamWriter osw
-                = new OutputStreamWriter(fos,"UTF-8");
-        PrintWriter pw = new PrintWriter(osw,true);
+        FileOutputStream fos = new FileOutputStream(fileName);
+        BufferedOutputStream bos
+                = new BufferedOutputStream(fos);
+        PrintWriter pw = new PrintWriter(bos, true);
         pw.print(doc.toString());
+        pw.close();
     }
 
     //test
