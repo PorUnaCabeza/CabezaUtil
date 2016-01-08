@@ -25,7 +25,7 @@ public class HtmlModelUtil {
 
     /**
      * 将指定的class属性替换为id属性,若替换后class属性为空，会将class属性删除
-     * eg：class="wrap-background" -> id="wrap-background"
+     * e.g.：class="wrap-background" -> id="wrap-background"
      * @param className jQuery选择器，如".wrap-background"
      * @param idName jQuery选择器,如"#wrap-background"
      */
@@ -55,7 +55,7 @@ public class HtmlModelUtil {
      * @param params 以键值对形式存放的参数,因html可能存在不规则书写，需手动指定替换规则
      *            key:替换起始位置
      *            value:替换结束位置(此处应固定为"px")
-     *            如：box-shadow:rgba(0, 0, 0, 0.4) 0px 0px 0px; 应添加：params.put(" ","px");
+     *            e.g.：box-shadow:rgba(0, 0, 0, 0.4) 0px 0px 0px; 应添加：params.put(" ","px");
      *               style="border-radius:50px;"                应添加：params.put(":","px");
      * @param multiple px转换为rem时参照单位
      */
@@ -66,16 +66,12 @@ public class HtmlModelUtil {
             double pxNum=0;
             @Override
             public void head(Node node, int i) {
-                try{
-                    if(node.attr("style")!=null&&!node.attr("style").isEmpty()){
-                        StringBuffer sb=new StringBuffer(node.attr("style"));
-                        for (Map.Entry<String, String> entry : params.entrySet()) {
-                            replaceByTarget(entry.getKey(),entry.getValue(), sb);
-                        }
-                        node.attr("style",sb.toString());
+                if (node.attr("style") != null && !node.attr("style").isEmpty()) {
+                    StringBuffer sb = new StringBuffer(node.attr("style"));
+                    for (Map.Entry<String, String> entry : params.entrySet()) {
+                        replaceByTarget(entry.getKey(), entry.getValue(), sb);
                     }
-                }catch(ClassCastException e){
-                    e.printStackTrace();
+                    node.attr("style", sb.toString());
                 }
             }
             @Override
@@ -127,13 +123,15 @@ public class HtmlModelUtil {
     }
 
     /**
-     * 将img标签内width、height属性删除并转换为style属性
-     * 如 img src="page8-6.png" width="290px" height="290px"转换为：
-     *   img src="page8-6.png" style="width:290px;height:290px;"
+     * 将width、height属性删除并转换为style属性
+     * e.g. :img src="page8-6.png" width="290px" height="290px"转换为：
+     *    img src="page8-6.png" style="width:290px;height:290px;"
+     * @param selector jQuery选择器
+     * @return
      */
-    public HtmlModelUtil formatImgElement(){
+    public HtmlModelUtil formatElementStyle(String selector) {
         StringBuffer sb=new StringBuffer();
-        Elements elmts=doc.select("img");
+        Elements elmts = doc.select(selector);
         for(Element elmt:elmts){
             if(elmt.hasAttr("width")||elmt.hasAttr("height")){
                 sb.setLength(0);
@@ -153,11 +151,33 @@ public class HtmlModelUtil {
     }
 
     /**
+     * 使用指定的字符串替换选择器所有匹配目标指定属性内的子字符串
+     *
+     * @param selector    jQuery选择器
+     * @param attr        元素内属性
+     * @param target      要被替换的值
+     * @param replacement 值的替换序列
+     */
+    public HtmlModelUtil replaceAttrContent(String selector, String attr, String target, String replacement) {
+        Elements elmts = doc.select(selector);
+        for (Element elmt : elmts) {
+            if (!elmt.attr(attr).isEmpty())
+                elmt.attr(attr, elmt.attr(attr).replace(target, replacement));
+        }
+        return this;
+    }
+
+    public HtmlModelUtil printHtml() {
+        System.out.println(doc.toString());
+        return this;
+    }
+
+    /**
      * 将Document保存到文件
      * @param fileName 文件名
      * @throws Exception
      */
-    public void printHtml(String fileName) throws Exception{
+    public void saveHtml(String fileName) throws Exception{
         FileOutputStream fos = new FileOutputStream(fileName);
         BufferedOutputStream bos
                 = new BufferedOutputStream(fos);
@@ -166,20 +186,22 @@ public class HtmlModelUtil {
         pw.close();
     }
 
-    //test
+    //e.g.
     public static void main(String[] args) throws Exception {
         File in = new File("model1.html");
         HtmlModelUtil hmu = new HtmlModelUtil(in);
         Map<String,String> params=new HashMap<String,String>();
         params.put(":","px");
         params.put(" ","px");
-        params.put("\"","px");
+        params.put("\"", "px");
 
-        hmu.formatImgElement()
+        hmu.formatElementStyle("img")
                 .classConvertToId(".wrapper-background", "#wrapper-background")
                 .classReName(".editable-image", ".editable-img")
                 .pxConvert2Rem(params, 16)
                 .gradeChildElmtInFatherElmt(".section", ".editable-img", "id", "sd")
-                .printHtml("jsouptest.html");
+                .replaceAttrContent("img", "src", "../dist/img/", "")
+                .replaceAttrContent("div", "style", "../dist/img/", "")
+                .saveHtml("test.html");
     }
 }
