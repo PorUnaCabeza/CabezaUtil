@@ -90,6 +90,8 @@ public class HtmlModelUtil {
                         }catch(NumberFormatException e){
                             continue;
                         }
+                        if(pxNum<=1)
+                            continue;
                         double remNum=pxNum/multiple;
                         sb.replace(pxStartIndex, pxEndIndex+2, remNum+"rem");
                         pxStartIndex=0;
@@ -188,7 +190,8 @@ public class HtmlModelUtil {
 
     //e.g.
     public static void main(String[] args) throws Exception {
-        File in = new File("model1.html");
+        String fileName="E:\\javaee\\raiyee\\yoga-res\\admin\\dev\\modules\\showPage\\html\\prana-20160229.html";
+        File in = new File(fileName);
         HtmlModelUtil hmu = new HtmlModelUtil(in);
         Map<String,String> params=new HashMap<String,String>();
         params.put(":","px");
@@ -196,12 +199,12 @@ public class HtmlModelUtil {
         params.put("\"", "px");
 
         hmu.formatElementStyle("img")
-                .classConvertToId(".wrapper-background", "#wrapper-background")
-                .classReName(".editable-image", ".editable-img")
+               /* .classConvertToId(".wrapper-background", "#wrapper-background")
+                .classReName(".editable-image", ".editable-img")*/
                 .pxConvert2Rem(params, 16)
-                .gradeChildElmtInFatherElmt(".section", ".editable-img", "id", "sd")
+                /*.gradeChildElmtInFatherElmt(".section", ".editable-img", "id", "sd")
                 .replaceAttrContent("img", "src", "../dist/img/", "")
-                .replaceAttrContent("div", "style", "../dist/img/", "")
-                .saveHtml("test.html");
+                .replaceAttrContent("div", "style", "../dist/img/", "")*/
+                .saveHtml(fileName.replaceAll("\\.html","")+"-rem.html");
     }
 }
