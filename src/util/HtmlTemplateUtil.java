@@ -131,7 +131,7 @@ public class HtmlTemplateUtil {
                     return;
                 int startIndex = nodeStyle.indexOf(attr);
                 int endIndex = nodeStyle.indexOf(";", startIndex) > 0 ? nodeStyle.indexOf(";", startIndex) : nodeStyle.length();
-                String attrValue = nodeStyle.substring(startIndex, endIndex);
+                String attrContent = nodeStyle.substring(startIndex, endIndex);
                 nodeStyle.delete(startIndex, endIndex);
                 for (String prefix : prefixList) {
                     String prefixAttr = prefix + attr;
@@ -143,10 +143,9 @@ public class HtmlTemplateUtil {
                 }
                 nodeStyle.append(";");
                 for (String prefix : prefixList) {
-                    String prefixAttr = prefix + attr;
-                    nodeStyle.append(prefixAttr + ":" + attrValue + ";");
+                    nodeStyle.append(prefix+ attrContent + ";");
                 }
-                nodeStyle.append(attr + ":" + attrValue + ";");
+                nodeStyle.append(attrContent + ";");
                 String prefixedStyle = nodeStyle.toString().replaceAll(";{2,}", ";");
                 node.attr("style", prefixedStyle);
             }
@@ -266,12 +265,12 @@ public class HtmlTemplateUtil {
         prefixList.add("-o-");
 
         htu.formatElementStyle("img")
-                .classConvertToId(".wrapper-background", "#wrapper-background")
+                /*.classConvertToId(".wrapper-background", "#wrapper-background")
                 .classReName(".editable-image", ".editable-img")
-                .px2Rem(px2RemParams, 16)
                 .gradeChildElmtInFatherElmt(".section", ".editable-img", "id", "sd")
                 .replaceAttrContent("img", "src", "../dist/img/", "")
-                .replaceAttrContent("div", "style", "../dist/img/", "")
+                .replaceAttrContent("div", "style", "../dist/img/", "")*/
+                .px2Rem(px2RemParams, 16)
                 .addPrefix("animation", prefixList)
                 .saveHtml(fileName.replaceAll("\\.html", "") + "-rem.html");
     }
