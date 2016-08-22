@@ -96,7 +96,7 @@ public class HtmlTemplateUtil {
                         } catch (NumberFormatException e) {
                             continue;
                         }
-                        if (pxNum <= 1)
+                        if (Math.abs(pxNum) <= 1)
                             continue;
                         double remNum = pxNum / multiple;
                         sb.replace(pxStartIndex, pxEndIndex + 2, remNum + "rem");
