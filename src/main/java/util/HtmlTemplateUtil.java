@@ -11,6 +11,8 @@ import org.jsoup.select.NodeVisitor;
 import java.io.*;
 import java.util.*;
 
+import org.apache.commons.lang.StringEscapeUtils;
+
 /**
  * Created by Zhangxs on 2016/1/7.
  */
@@ -143,7 +145,7 @@ public class HtmlTemplateUtil {
                 }
                 nodeStyle.append(";");
                 for (String prefix : prefixList) {
-                    nodeStyle.append(prefix+ attrContent + ";");
+                    nodeStyle.append(prefix + attrContent + ";");
                 }
                 nodeStyle.append(attrContent + ";");
                 String prefixedStyle = nodeStyle.toString().replaceAll(";{2,}", ";");
@@ -244,13 +246,13 @@ public class HtmlTemplateUtil {
                 = new BufferedOutputStream(fos);
         PrintWriter pw = new PrintWriter(bos, true);
         doc.outputSettings().prettyPrint(false);
-        pw.print(doc.toString());
+        pw.print(StringEscapeUtils.unescapeHtml(doc.html()));
         pw.close();
     }
 
     //e.g.
     public static void main(String[] args) throws Exception {
-        String fileName = "C:\\Users\\admin.admin-PC\\Desktop\\boss\\show-template-01.html";
+        String fileName = "C:\\components.html";
         File in = new File(fileName);
         HtmlTemplateUtil htu = new HtmlTemplateUtil(in);
 
