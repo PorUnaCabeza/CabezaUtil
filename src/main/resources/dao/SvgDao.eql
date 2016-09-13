@@ -1,0 +1,31 @@
+--[insertCategory]
+INSERT INTO tt_f_show_shape_category (CATEGORY_CODE
+                                    ,CATEGORY_PARENT
+                                    ,CATEGORY_SEQ
+                                    ,STATE
+                                    )
+                               VALUE(
+                                     #categoryCode#
+                                    ,#parentCode#
+                                    ,#index#
+                                    ,1
+                               )
+        ON DUPLICATE KEY UPDATE CATEGORY_PARENT=#parentCode#
+                               ,CATEGORY_SEQ=#index#
+
+--[insertSvg]
+INSERT INTO tt_f_show_shape (SHAPE_ID
+                            ,SHAPE_CONTENT
+                            ,CATEGORY_CODE
+                            ,STATE
+                            ,CREATE_TIME
+                            )
+                       VALUE(
+                             #id#
+                            ,#content#
+                            ,#categoryCode#
+                            ,1
+                            ,now()
+                       )
+    ON DUPLICATE KEY UPDATE SHAPE_CONTENT=#content#
+                           ,CATEGORY_CODE=#categoryCode#
