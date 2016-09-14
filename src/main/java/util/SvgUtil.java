@@ -41,7 +41,7 @@ public class SvgUtil {
             e.printStackTrace();
         }
         doc.select("svg").first()
-                .attr("id", "svg_" + index)
+                .removeAttr("id")
                 .attr("width", "100%")
                 .attr("height", "100%");
         Elements gs = doc.select("g");
@@ -53,6 +53,6 @@ public class SvgUtil {
 
 
     public static void main(String[] args) {
-        new SvgUtil().showAllFile(new File("C:\\Users\\admin\\Desktop\\9月9日迭代\\10000000000000"), -1);
+        new SvgUtil().showAllFile(new File("C:\\10000000000000"), -1);
     }
 }

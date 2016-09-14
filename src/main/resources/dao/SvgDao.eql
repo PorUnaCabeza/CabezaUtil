@@ -1,5 +1,5 @@
 --[insertCategory]
-INSERT INTO tt_f_show_shape_category (CATEGORY_CODE
+INSERT INTO shape_category (CATEGORY_CODE
                                     ,CATEGORY_PARENT
                                     ,CATEGORY_SEQ
                                     ,STATE
@@ -14,7 +14,7 @@ INSERT INTO tt_f_show_shape_category (CATEGORY_CODE
                                ,CATEGORY_SEQ=#index#
 
 --[insertSvg]
-INSERT INTO tt_f_show_shape (SHAPE_ID
+INSERT INTO shape (SHAPE_ID
                             ,SHAPE_CONTENT
                             ,CATEGORY_CODE
                             ,STATE
